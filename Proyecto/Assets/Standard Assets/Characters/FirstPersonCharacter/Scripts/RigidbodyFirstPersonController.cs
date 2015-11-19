@@ -8,6 +8,8 @@ namespace UnityStandardAssets.Characters.FirstPerson
     [RequireComponent(typeof (CapsuleCollider))]
     public class RigidbodyFirstPersonController : MonoBehaviour
     {
+		public bool isMoving = true;
+
         [Serializable]
         public class MovementSettings
         {
@@ -209,15 +211,25 @@ namespace UnityStandardAssets.Characters.FirstPerson
 
         private Vector2 GetInput()
         {
-            
-            Vector2 input = new Vector2
-                {
-                    x = CrossPlatformInputManager.GetAxis("Horizontal"),
-                    y = CrossPlatformInputManager.GetAxis("Vertical")
-                };
+
+			Vector2 input = new Vector2
+			{
+				x = Input.GetAxis("Horizontal"),
+				y = Input.GetAxis("Vertical")
+			};
+				
+				// If GetAxis are empty, try alternate input methods.
+			if (Math.Abs(input.x) + Math.Abs(input.y) < 2 * float.Epsilon)
+			{
+				if (isMoving) //IsMoving is the flag for forward movement. This is the bool that would be toggled by a click of the Google cardboard magnet
+				{
+					input = new Vector2(0, 1); // go straight forward by setting positive Vertical
+				}
+
+			}
 			movementSettings.UpdateDesiredTargetSpeed(input);
-            return input;
-        }
+			return input;
+       }
 
 
         private void RotateView()
@@ -260,5 +272,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
                 m_Jumping = false;
             }
         }
+
+
     }
 }
