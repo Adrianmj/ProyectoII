@@ -129,7 +129,8 @@ namespace UnityStandardAssets.Characters.FirstPerson
         private void Update()
         {
             RotateView();
-
+			if (this.movementSettings.ForwardSpeed < 30.0f) 
+				this.movementSettings.ForwardSpeed += 0.02f;
             if (CrossPlatformInputManager.GetButtonDown("Jump") && !m_Jump)
             {
                 m_Jump = true;
@@ -221,7 +222,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
 				// If GetAxis are empty, try alternate input methods.
 			if (Math.Abs(input.x) + Math.Abs(input.y) < 2 * float.Epsilon)
 			{
-				if (isMoving) //IsMoving is the flag for forward movement. This is the bool that would be toggled by a click of the Google cardboard magnet
+				if (isMoving) //IsMoving is the flag for forward movement. 
 				{
 					input = new Vector2(0, 1); // go straight forward by setting positive Vertical
 				}
