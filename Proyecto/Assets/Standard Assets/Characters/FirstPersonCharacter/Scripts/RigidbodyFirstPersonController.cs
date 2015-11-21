@@ -129,6 +129,9 @@ namespace UnityStandardAssets.Characters.FirstPerson
         private void Update()
         {
             RotateView();
+			if (this.transform.position.y >= 11)
+				Application.LoadLevel ("GameOver");
+
 			if (this.movementSettings.ForwardSpeed < 30.0f) 
 				this.movementSettings.ForwardSpeed += 0.02f;
             if (CrossPlatformInputManager.GetButtonDown("Jump") && !m_Jump)
