@@ -7,6 +7,7 @@ namespace UnityStandardAssets.Characters.ThirdPerson
     [RequireComponent(typeof (ThirdPersonCharacter))]
     public class AICharacterControl : MonoBehaviour
     {
+		private Vector3 distance;
         public NavMeshAgent agent { get; private set; } // the navmesh agent required for the path finding
         public ThirdPersonCharacter character { get; private set; } // the character we are controlling
         public Transform target; // target to aim for
@@ -28,10 +29,11 @@ namespace UnityStandardAssets.Characters.ThirdPerson
         {
             if (target != null)
             {
-                agent.SetDestination(target.position);
+				distance = this.transform.position - target.transform.position;
+				if (distance.sqrMagnitude < 2*2)
+					Application.LoadLevel ("GameOver2");
 
-				
-				
+                agent.SetDestination(target.position);	
                 // use the values to move the character
                 character.Move(agent.desiredVelocity, false, false);
             }

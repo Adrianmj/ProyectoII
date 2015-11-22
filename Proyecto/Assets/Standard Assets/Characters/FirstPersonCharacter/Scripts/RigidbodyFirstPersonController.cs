@@ -6,9 +6,10 @@ namespace UnityStandardAssets.Characters.FirstPerson
 {
     [RequireComponent(typeof (Rigidbody))]
     [RequireComponent(typeof (CapsuleCollider))]
-    public class RigidbodyFirstPersonController : MonoBehaviour
+
+    public class RigidbodyFirstPersonController : MonoBehaviour 
     {
-		public bool isMoving = true;
+		private bool isMoving = false;
 
         [Serializable]
         public class MovementSettings
@@ -120,6 +121,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
 
         private void Start()
         {
+
             m_RigidBody = GetComponent<Rigidbody>();
             m_Capsule = GetComponent<CapsuleCollider>();
             mouseLook.Init (transform, cam.transform);
@@ -129,10 +131,10 @@ namespace UnityStandardAssets.Characters.FirstPerson
         private void Update()
         {
             RotateView();
-			if (this.transform.position.y >= 11)
+			if (this.transform.position.y >= 10)
 				Application.LoadLevel ("GameOver");
 
-			if (this.movementSettings.ForwardSpeed < 30.0f) 
+			if (this.movementSettings.ForwardSpeed < 20.0f) 
 				this.movementSettings.ForwardSpeed += 0.02f;
             if (CrossPlatformInputManager.GetButtonDown("Jump") && !m_Jump)
             {
@@ -215,22 +217,8 @@ namespace UnityStandardAssets.Characters.FirstPerson
 
         private Vector2 GetInput()
         {
-
-			Vector2 input = new Vector2
-			{
-				x = Input.GetAxis("Horizontal"),
-				y = Input.GetAxis("Vertical")
-			};
-				
-				// If GetAxis are empty, try alternate input methods.
-			if (Math.Abs(input.x) + Math.Abs(input.y) < 2 * float.Epsilon)
-			{
-				if (isMoving) //IsMoving is the flag for forward movement. 
-				{
-					input = new Vector2(0, 1); // go straight forward by setting positive Vertical
-				}
-
-			}
+			Vector2 input = new Vector2 (0, 1);
+	
 			movementSettings.UpdateDesiredTargetSpeed(input);
 			return input;
        }
@@ -276,7 +264,6 @@ namespace UnityStandardAssets.Characters.FirstPerson
                 m_Jumping = false;
             }
         }
-
 
     }
 }
